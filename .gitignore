@@ -2,3 +2,6 @@ server/.env
 server/node_modules
 .env
 node_modules
+echo "node_modules/" >> .gitignore
+echo "server/node_modules/" >> .gitignore
+echo "app/node_modules/" >> .gitignore
