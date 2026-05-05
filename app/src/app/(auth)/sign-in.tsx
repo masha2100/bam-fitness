@@ -1,87 +1,95 @@
-import { useState } from 'react';
-import { View } from 'react-native';
-import { Pressable } from 'react-native';
-import {
-  VStack,
-  Text,
-  Input,
-  InputField,
-  Button,
-  ButtonText,
-} from '@gluestack-ui/themed';
+import { View, Text, TextInput, Pressable, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useSignInMutation } from '../../hooks/api/useSignInMutation';
+
+const SignInSchema = z.object({
+  email: z.string().email('Невалідний email'),
+});
+
+type SignInForm = z.infer<typeof SignInSchema>;
 
 export default function SignInScreen() {
-  const [email, setEmail] = useState('');
+  const { mutate, isPending, error } = useSignInMutation();
+
+  const { control, handleSubmit, formState: { errors } } = useForm<SignInForm>({
+    resolver: zodResolver(SignInSchema),
+  });
+
+  const onSubmit = (data: SignInForm) => {
+    mutate(data);
+  };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#0D0D0D', paddingHorizontal: 24, paddingBottom: 48, justifyContent: 'flex-end' }}>
-
-      {/* LOGO */}
-      <VStack position="absolute" top={80} left={0} right={0} alignItems="center">
-        <Text color="$white" fontSize={32} fontWeight="bold" letterSpacing={8}>
-          B A M
-        </Text>
-        <Text color="$coolGray400" fontSize={12} marginTop={4}>
-          @BAMLABS.USA
-        </Text>
-      </VStack>
-
-      {/* TITLE */}
-      <Text color="$white" fontSize={40} fontWeight="bold" marginBottom={32}>
-        STAY{'\n'}PRESENT.{'\n'}TRY{'\n'}HARDER.
-      </Text>
-
-      {/* DESCRIPTION */}
-      <Text color="$coolGray400" textAlign="center" fontSize={12} marginBottom={24}>
-        Enter to access BAM's exclusive exercise Training & Tracking experience.
-      </Text>
-
-      {/* INPUT */}
-      <Input
-        backgroundColor="#1A1A1A"
-        borderColor="#2A2A2A"
-        borderWidth={1}
-        borderRadius={12}
-        paddingHorizontal={16}
-        paddingVertical={12}
-        marginBottom={16}
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: '#0D0D0D' }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 24, paddingBottom: 48, justifyContent: 'flex-end' }}
+        keyboardShouldPersistTaps="handled"
       >
-        <InputField
-          placeholder="Your email"
-          placeholderTextColor="#888888"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          color="#FFFFFF"
-        />
-      </Input>
+  
+        <View style={{ position: 'absolute', top: 80, left: 0, right: 0, alignItems: 'center' }}>
+          <Text style={{ color: '#FFFFFF', fontSize: 32, fontWeight: 'bold', letterSpacing: 8 }}>
+            B A M
+          </Text>
+          <Text style={{ color: '#888888', fontSize: 12, marginTop: 4 }}>
+            @BAMLABS.USA
+          </Text>
+        </View>
 
-     <Pressable
-  style={{
-    width: '100%',
-    backgroundColor: '#1A1A1A',
-    borderColor: '#2A2A2A',
-    borderWidth: 1,
-    borderRadius: 999,
-    paddingVertical: 16,
-    alignItems: 'center',
-    marginBottom: 24,
-    opacity: email.length > 0 ? 1 : 0.5,
-  }}
->
-  <Text style={{ color: '#FFFFFF', letterSpacing: 2 }}>
-    CONTINUE →
-  </Text>
-</Pressable>
+        <Text style={{ color: '#FFFFFF', fontSize: 40, fontWeight: 'bold', marginBottom: 32 }}>
+          STAY{'\n'}PRESENT.{'\n'}TRY{'\n'}HARDER.
+        </Text>
 
-      {/* FOOTER */}
-      <Text color="$coolGray400" fontSize={10} textAlign="center">
-        By continuing, you agree to BAM Labs'{' '}
-        <Text color="#C8956C">Terms of Service</Text>{' '}
-        and{' '}
-        <Text color="#C8956C">Privacy Policy.</Text>
-      </Text>
+     
+        <Text style={{ color: '#888888', textAlign: 'center', fontSize: 12, marginBottom: 24 }}>
+          Enter to access BAM's exclusive exercise Training & Tracking experience.
+        </Text>
+<Controller
+  control={control}
+  name="email"
+  render={({ field: { onChange, value } }) => (
+    <View style={{ backgroundColor: '#1A1A1A', borderWidth: 1, borderColor: errors.email ? '#FF4444' : '#2A2A2A', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 16, marginBottom: 8 }}>
+      <TextInput
+        style={{ color: '#FFFFFF', fontSize: 16 }}
+        placeholder="Your email"
+        placeholderTextColor="#888888"
+        value={value}
+        onChangeText={onChange}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
     </View>
+  )}
+/>
+
+{errors.email && (
+  <Text style={{ color: '#FF4444', fontSize: 12, marginBottom: 8 }}>
+    {errors.email.message}
+  </Text>
+)}
+        <Pressable
+          onPress={handleSubmit(onSubmit)}
+          disabled={isPending}
+          style={{ backgroundColor: '#1A1A1A', borderWidth: 1, borderColor: '#2A2A2A', borderRadius: 999, paddingVertical: 16, alignItems: 'center', marginBottom: 24, opacity: isPending ? 0.5 : 1 }}
+        >
+          {isPending ? (
+            <ActivityIndicator color="#FFFFFF" />
+          ) : (
+            <Text style={{ color: '#FFFFFF', letterSpacing: 4 }}>CONTINUE →</Text>
+          )}
+        </Pressable>
+
+        <Text style={{ color: '#888888', fontSize: 10, textAlign: 'center' }}>
+          By continuing, you agree to BAM Labs'{' '}
+          <Text style={{ color: '#C8956C' }}>Terms of Service</Text>
+          {' '}and{' '}
+          <Text style={{ color: '#C8956C' }}>Privacy Policy.</Text>
+        </Text>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
