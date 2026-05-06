@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import { getDefaultStore } from 'jotai';
 import { forceLogoutAtom } from '../atoms/auth';
 
-const API_URL = 'http://172.20.10.2:4000';
+const API_URL = 'http://10.0.2.2:4000';
 
 export const apiClient = axios.create({
   baseURL: API_URL,

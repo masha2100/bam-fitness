@@ -12,16 +12,18 @@ type Exercise = {
 
 type Props = {
   exercises: Exercise[];
+  exerciseStartIndex?: number;
 };
 
-export const ExerciseLogTable = ({ exercises }: Props) => {
+export const ExerciseLogTable = ({ exercises, exerciseStartIndex = 0 }: Props) => {
   return (
-    <ScrollView>
-      {exercises.map((exercise) => (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      {exercises.map((exercise, index) => (
         <View key={exercise.id} style={{ marginBottom: 24 }}>
           <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>
             {exercise.name}
           </Text>
+
           <Text style={{ color: '#888888', fontSize: 12, marginBottom: 12 }}>
             {exercise.tags.join(' · ')}
           </Text>
@@ -33,12 +35,12 @@ export const ExerciseLogTable = ({ exercises }: Props) => {
             <Text style={{ width: 30, color: '#888888', fontSize: 12, textAlign: 'center' }}>LOG</Text>
           </View>
 
-          {exercise.defaultSets.map((set, index) => (
+          {exercise.defaultSets.map((set, setIndex) => (
             <SetRow
-              key={index}
-              setNumber={index + 1}
-              reps={set.reps}
-              weight={set.weight}
+              key={setIndex}
+              setNumber={setIndex + 1}
+              exerciseIndex={exerciseStartIndex + index}
+              setIndex={setIndex}
             />
           ))}
         </View>
