@@ -10,6 +10,7 @@ import { config } from '@gluestack-ui/config';
 import { View, Text } from 'react-native';
 import { authTokenAtom, isSignedInAtom } from '../atoms/auth';
 import { queryClient } from '../lib/queryClient';
+import { jotaiStore } from '../lib/store';
 
 function RootLayout() {
   const [, setToken] = useAtom(authTokenAtom);
@@ -64,12 +65,10 @@ function RootLayout() {
 
 export default function App() {
   return (
-    <GluestackUIProvider config={config}>
-      <JotaiProvider>
+      <JotaiProvider store={jotaiStore}>
         <QueryClientProvider client={queryClient}>
           <RootLayout />
         </QueryClientProvider>
       </JotaiProvider>
-    </GluestackUIProvider>
   );
 }
