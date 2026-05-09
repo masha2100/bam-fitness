@@ -1,12 +1,22 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
-import { getDefaultStore } from 'jotai';
+import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 import { forceLogoutAtom } from '../atoms/auth';
+import { jotaiStore } from '../lib/store';
 
-const API_URL = 'http://10.0.2.2:4000';
+const getApiUrl = () => {
+  if (__DEV__) {
+    if (Platform.OS === 'android' && !Constants.isDevice) {
+      return 'http://10.0.2.2:4000'; 
+    }
+    return 'http://192.168.0.131:4000'; 
+  }
+  return 'https://your-production-api.com'; 
+};
 
 export const apiClient = axios.create({
-  baseURL: API_URL,
+  baseURL: getApiUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
@@ -25,8 +35,7 @@ apiClient.interceptors.response.use(
   async (error) => {
     if (error.response?.status === 401) {
       await SecureStore.deleteItemAsync('token');
-      const store = getDefaultStore();
-      store.set(forceLogoutAtom);
+      jotaiStore.set(forceLogoutAtom);
     }
     return Promise.reject(error);
   }

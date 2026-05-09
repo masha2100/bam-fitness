@@ -13,17 +13,16 @@ export const SetRow = ({ setNumber, exerciseIndex, setIndex }: Props) => {
   const completed = watch(`exercises.${exerciseIndex}.sets.${setIndex}.completed`);
 
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: '#2A2A2A' }}>
-      <Text style={{ color: '#888888', width: 30, fontSize: 14 }}>{setNumber}</Text>
-
+    <View className="flex-row items-center py-2 border-b border-neutral-800">
+      <Text className="text-neutral-500 w-8 text-sm">{setNumber}</Text>
       <Controller
         control={control}
         name={`exercises.${exerciseIndex}.sets.${setIndex}.weight`}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <View style={{ flex: 1, marginHorizontal: 4 }}>
-            <View style={{ backgroundColor: '#1A1A1A', borderRadius: 8, padding: 8, borderWidth: 1, borderColor: error ? '#FF4444' : '#2A2A2A' }}>
+          <View className="flex-1 mx-1">
+            <View className={`bg-neutral-900 rounded-lg p-2 border ${error ? 'border-red-500' : 'border-neutral-800'}`}>
               <TextInput
-                style={{ color: '#FFFFFF', fontSize: 14, textAlign: 'center' }}
+                className="text-white text-sm text-center"
                 value={String(value || '')}
                 onChangeText={onChange}
                 keyboardType="numeric"
@@ -32,15 +31,14 @@ export const SetRow = ({ setNumber, exerciseIndex, setIndex }: Props) => {
           </View>
         )}
       />
-
       <Controller
         control={control}
         name={`exercises.${exerciseIndex}.sets.${setIndex}.reps`}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <View style={{ flex: 1, marginHorizontal: 4 }}>
-            <View style={{ backgroundColor: '#1A1A1A', borderRadius: 8, padding: 8, borderWidth: 1, borderColor: error ? '#FF4444' : '#2A2A2A' }}>
+          <View className="flex-1 mx-1">
+            <View className={`bg-neutral-900 rounded-lg p-2 border ${error ? 'border-red-500' : 'border-neutral-800'}`}>
               <TextInput
-                style={{ color: '#FFFFFF', fontSize: 14, textAlign: 'center' }}
+                className="text-white text-sm text-center"
                 value={String(value || '')}
                 onChangeText={onChange}
                 keyboardType="numeric"
@@ -49,12 +47,11 @@ export const SetRow = ({ setNumber, exerciseIndex, setIndex }: Props) => {
           </View>
         )}
       />
-
       <Pressable
         onPress={() => setValue(`exercises.${exerciseIndex}.sets.${setIndex}.completed`, !completed)}
-        style={{ width: 30, height: 30, borderRadius: 15, borderWidth: 1, borderColor: completed ? '#C8956C' : '#2A2A2A', alignItems: 'center', justifyContent: 'center', backgroundColor: completed ? '#C8956C22' : 'transparent' }}
+        className={`w-8 h-8 rounded-full border items-center justify-center ${completed ? 'border-[#C8956C] bg-[#C8956C]/10' : 'border-neutral-800 bg-transparent'}`}
       >
-        <Text style={{ color: completed ? '#C8956C' : '#888888' }}>✓</Text>
+        <Text className={completed ? 'text-[#C8956C]' : 'text-neutral-500'}>✓</Text>
       </Pressable>
     </View>
   );

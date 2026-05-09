@@ -8,7 +8,7 @@
     ],
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "noEmit": true,
+    "noEmit": true
   },
   "include": [
     "**/*.ts",

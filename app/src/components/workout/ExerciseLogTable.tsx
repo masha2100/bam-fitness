@@ -19,22 +19,19 @@ export const ExerciseLogTable = ({ exercises, exerciseStartIndex = 0 }: Props) =
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       {exercises.map((exercise, index) => (
-        <View key={exercise.id} style={{ marginBottom: 24 }}>
-          <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>
+        <View key={exercise.id} className="mb-6">
+          <Text className="text-white text-base font-bold mb-1">
             {exercise.name}
           </Text>
-
-          <Text style={{ color: '#888888', fontSize: 12, marginBottom: 12 }}>
+          <Text className="text-neutral-500 text-xs mb-3">
             {exercise.tags.join(' · ')}
           </Text>
-
-          <View style={{ flexDirection: 'row', paddingBottom: 8, borderBottomWidth: 1, borderBottomColor: '#2A2A2A' }}>
-            <Text style={{ color: '#888888', width: 30, fontSize: 12 }}>SET</Text>
-            <Text style={{ flex: 1, color: '#888888', fontSize: 12, textAlign: 'center' }}>WEIGHT</Text>
-            <Text style={{ flex: 1, color: '#888888', fontSize: 12, textAlign: 'center' }}>REPS</Text>
-            <Text style={{ width: 30, color: '#888888', fontSize: 12, textAlign: 'center' }}>LOG</Text>
+          <View className="flex-row pb-2 border-b border-neutral-800">
+            <Text className="text-neutral-500 w-8 text-xs">SET</Text>
+            <Text className="flex-1 text-neutral-500 text-xs text-center">WEIGHT</Text>
+            <Text className="flex-1 text-neutral-500 text-xs text-center">REPS</Text>
+            <Text className="w-8 text-neutral-500 text-xs text-center">LOG</Text>
           </View>
-
           {exercise.defaultSets.map((set, setIndex) => (
             <SetRow
               key={setIndex}

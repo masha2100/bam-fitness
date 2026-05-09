@@ -95,20 +95,8 @@ router.post('/log', authMiddleware, async (req: AuthRequest, res: Response) => {
   const { templateId, durationSec, exercises } = parsed.data;
   const userId = req.userId!;
 
-  const { data: log, error: logError } = await supabase
-    .from('workout_logs')
-    .insert({ user_id: userId, routine_id: templateId, duration_sec: durationSec })
-    .select()
-    .single();
-
-  if (logError || !log) {
-    res.status(500).json({ error: { message: 'Failed to save workout' } });
-    return;
-  }
-
   const sets = exercises.flatMap((exercise) =>
     exercise.sets.map((set, index) => ({
-      workout_log_id: log.id,
       exercise_id: exercise.id,
       set_number: index + 1,
       reps: set.reps,
@@ -117,16 +105,19 @@ router.post('/log', authMiddleware, async (req: AuthRequest, res: Response) => {
     }))
   );
 
-  const { error: setsError } = await supabase
-    .from('workout_log_sets')
-    .insert(sets);
+  const { data, error } = await supabase.rpc('insert_workout_log', {
+    p_user_id: userId,
+    p_routine_id: templateId,
+    p_duration_sec: durationSec,
+    p_sets: JSON.stringify(sets),
+  });
 
-  if (setsError) {
-    res.status(500).json({ error: { message: 'Failed to save sets' } });
+  if (error) {
+    res.status(500).json({ error: { message: 'Failed to save workout' } });
     return;
   }
 
-  res.status(201).json({ id: log.id });
+  res.status(201).json({ id: data });
 });
 
 export default router;

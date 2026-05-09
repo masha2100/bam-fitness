@@ -11,7 +11,7 @@ export default function RoutinesScreen() {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, backgroundColor: '#0D0D0D', alignItems: 'center', justifyContent: 'center' }}>
+      <View className="flex-1 bg-neutral-950 items-center justify-center">
         <ActivityIndicator color="#C8956C" />
       </View>
     );
@@ -19,21 +19,20 @@ export default function RoutinesScreen() {
 
   if (isError) {
     return (
-      <View style={{ flex: 1, backgroundColor: '#0D0D0D', alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{ color: '#888888', marginBottom: 16 }}>Щось пішло не так</Text>
+      <View className="flex-1 bg-neutral-950 items-center justify-center">
+        <Text className="text-neutral-500 mb-4">Щось пішло не так</Text>
         <Pressable onPress={() => refetch()}>
-          <Text style={{ color: '#C8956C' }}>Спробувати знову</Text>
+          <Text className="text-[#C8956C]">Спробувати знову</Text>
         </Pressable>
       </View>
     );
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#0D0D0D', padding: 24 }}>
-      <Text style={{ color: '#FFFFFF', fontSize: 24, fontWeight: 'bold', marginTop: 60, marginBottom: 24 }}>
+    <View className="flex-1 bg-neutral-950 p-6">
+      <Text className="text-white text-2xl font-bold mt-16 mb-6">
         Choose Routine
       </Text>
-
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
@@ -46,19 +45,12 @@ export default function RoutinesScreen() {
               });
             }}
             onPress={() => router.push(`/(workout)/log/${item.id}`)}
-            style={{
-              backgroundColor: '#1A1A1A',
-              borderWidth: 1,
-              borderColor: '#2A2A2A',
-              borderRadius: 12,
-              padding: 20,
-              marginBottom: 12,
-            }}
+            className="bg-neutral-900 border border-neutral-800 rounded-xl p-5 mb-3"
           >
-            <Text style={{ color: '#FFFFFF', fontSize: 18, fontWeight: 'bold', marginBottom: 4 }}>
+            <Text className="text-white text-lg font-bold mb-1">
               {item.name}
             </Text>
-            <Text style={{ color: '#888888', fontSize: 14 }}>
+            <Text className="text-neutral-500 text-sm">
               {item.exerciseCount} exercises · {item.estimatedMinutes} min
             </Text>
           </Pressable>

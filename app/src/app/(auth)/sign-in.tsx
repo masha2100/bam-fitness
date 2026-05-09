@@ -22,74 +22,74 @@ export default function SignInScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: '#0D0D0D' }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  <KeyboardAvoidingView
+    className="flex-1 bg-neutral-950"
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  >
+    <ScrollView
+      contentContainerClassName="grow px-6 pb-12"
+      keyboardShouldPersistTaps="handled"
     >
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 24, paddingBottom: 48, justifyContent: 'flex-end' }}
-        keyboardShouldPersistTaps="handled"
-      >
-  
-        <View style={{ position: 'absolute', top: 80, left: 0, right: 0, alignItems: 'center' }}>
-          <Text style={{ color: '#FFFFFF', fontSize: 32, fontWeight: 'bold', letterSpacing: 8 }}>
-            B A M
-          </Text>
-          <Text style={{ color: '#888888', fontSize: 12, marginTop: 4 }}>
-            @BAMLABS.USA
-          </Text>
-        </View>
-
-        <Text style={{ color: '#FFFFFF', fontSize: 40, fontWeight: 'bold', marginBottom: 32 }}>
-          STAY{'\n'}PRESENT.{'\n'}TRY{'\n'}HARDER.
+      <View className="items-center mt-16 mb-16">
+        <Text className="text-white text-4xl font-bold tracking-widest">
+          B A M
         </Text>
-
-     
-        <Text style={{ color: '#888888', textAlign: 'center', fontSize: 12, marginBottom: 24 }}>
-          Enter to access BAM's exclusive exercise Training & Tracking experience.
+        <Text className="text-neutral-500 text-xs mt-1">
+          @BAMLABS.USA
         </Text>
-<Controller
-  control={control}
-  name="email"
-  render={({ field: { onChange, value } }) => (
-    <View style={{ backgroundColor: '#1A1A1A', borderWidth: 1, borderColor: errors.email ? '#FF4444' : '#2A2A2A', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 16, marginBottom: 8 }}>
-      <TextInput
-        style={{ color: '#FFFFFF', fontSize: 16 }}
-        placeholder="Your email"
-        placeholderTextColor="#888888"
-        value={value}
-        onChangeText={onChange}
-        keyboardType="email-address"
-        autoCapitalize="none"
+      </View>
+      <Text className="text-white text-5xl font-bold mb-8">
+        STAY{'\n'}PRESENT.{'\n'}TRY{'\n'}HARDER.
+      </Text>
+
+      <Text className="text-neutral-500 text-center text-xs mb-6">
+        Enter to access BAM's exclusive exercise Training & Tracking experience.
+      </Text>
+
+      <Controller
+        control={control}
+        name="email"
+        render={({ field: { onChange, value } }) => (
+          <View className={`bg-neutral-900 border rounded-xl px-4 py-4 mb-2 ${errors.email ? 'border-red-500' : 'border-neutral-800'}`}>
+            <TextInput
+              className="text-white text-base"
+              placeholder="Your email"
+              placeholderTextColor="#888888"
+              value={value}
+              onChangeText={onChange}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+          </View>
+        )}
       />
-    </View>
-  )}
-/>
 
-{errors.email && (
-  <Text style={{ color: '#FF4444', fontSize: 12, marginBottom: 8 }}>
-    {errors.email.message}
-  </Text>
-)}
-        <Pressable
-          onPress={handleSubmit(onSubmit)}
-          disabled={isPending}
-          style={{ backgroundColor: '#1A1A1A', borderWidth: 1, borderColor: '#2A2A2A', borderRadius: 999, paddingVertical: 16, alignItems: 'center', marginBottom: 24, opacity: isPending ? 0.5 : 1 }}
-        >
-          {isPending ? (
-            <ActivityIndicator color="#FFFFFF" />
-          ) : (
-            <Text style={{ color: '#FFFFFF', letterSpacing: 4 }}>CONTINUE →</Text>
-          )}
-        </Pressable>
-
-        <Text style={{ color: '#888888', fontSize: 10, textAlign: 'center' }}>
-          By continuing, you agree to BAM Labs'{' '}
-          <Text style={{ color: '#C8956C' }}>Terms of Service</Text>
-          {' '}and{' '}
-          <Text style={{ color: '#C8956C' }}>Privacy Policy.</Text>
+      {errors.email && (
+        <Text className="text-red-500 text-xs mb-2">
+          {errors.email.message}
         </Text>
-      </ScrollView>
-    </KeyboardAvoidingView>
-  );
+      )}
+
+      <Pressable
+        onPress={handleSubmit(onSubmit)}
+        disabled={isPending}
+        className={`bg-neutral-900 border border-neutral-800 rounded-full py-4 items-center mb-6 ${isPending ? 'opacity-50' : 'opacity-100'}`}
+      >
+        {isPending ? (
+          <ActivityIndicator color="#FFFFFF" />
+        ) : (
+          <Text className="text-white tracking-widest">CONTINUE →</Text>
+        )}
+      </Pressable>
+
+      <Text className="text-neutral-500 text-xs text-center">
+        By continuing, you agree to BAM Labs'{' '}
+        <Text className="text-[#C8956C]">Terms of Service</Text>
+        {' '}and{' '}
+        <Text className="text-[#C8956C]">Privacy Policy.</Text>
+      </Text>
+
+    </ScrollView>
+  </KeyboardAvoidingView>
+);
 }

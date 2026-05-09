@@ -5,6 +5,8 @@ export interface AuthRequest extends Request {
   userId?: string;
 }
 
+export type AuthRequestWithUserId = Request & Required<AuthRequest>;
+
 export const authMiddleware = (
   req: AuthRequest,
   res: Response,

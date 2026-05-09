@@ -9,44 +9,42 @@ export default function HomeScreen() {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, backgroundColor: '#0D0D0D', alignItems: 'center', justifyContent: 'center' }}>
+      <View className="flex-1 bg-neutral-950 items-center justify-center">
         <ActivityIndicator color="#C8956C" />
       </View>
     );
   }
+  
 
   if (isError) {
     return (
-      <View style={{ flex: 1, backgroundColor: '#0D0D0D', alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={{ color: '#888888', marginBottom: 16 }}>Щось пішло не так</Text>
+      <View className="flex-1 bg-neutral-950 items-center justify-center">
+        <Text className="text-neutral-500 mb-4">Щось пішло не так</Text>
         <Pressable onPress={() => refetch()}>
-          <Text style={{ color: '#C8956C' }}>Спробувати знову</Text>
+          <Text className="text-[#C8956C]">Спробувати знову</Text>
         </Pressable>
       </View>
     );
   }
-
   return (
-    <View style={{ flex: 1, backgroundColor: '#0D0D0D', padding: 24 }}>
-      <Text style={{ color: '#FFFFFF', fontSize: 24, fontWeight: 'bold', marginTop: 60, marginBottom: 8 }}>
-        Welcome Back, {data?.welcome.name}
+  <View className="flex-1 bg-neutral-950 px-6 pt-16">
+    <Text className="text-white text-2xl font-bold mb-2">
+      Welcome Back, {data?.welcome.name}
+    </Text>
+    <GoalProgressBar
+      completed={data?.goalProgress.completed || 0}
+      target={data?.goalProgress.target || 5}
+    />
+    <WeeklyCalendar completed={data?.goalProgress.completed || 0} />
+    <Pressable
+      onPress={() => router.push('/(tabs)/routines')}
+      className="bg-[#C8956C] rounded-full py-5 items-center"
+    >
+      <Text className="text-white font-bold tracking-widest">
+        LET'S GO →
       </Text>
-
-      <GoalProgressBar
-        completed={data?.goalProgress.completed || 0}
-        target={data?.goalProgress.target || 5}
-      />
-
-      <WeeklyCalendar completed={data?.goalProgress.completed || 0} />
-
-      <Pressable
-        onPress={() => router.push('/(tabs)/routines')}
-        style={{ backgroundColor: '#C8956C', borderRadius: 999, paddingVertical: 18, alignItems: 'center' }}
-      >
-        <Text style={{ color: '#FFFFFF', fontWeight: 'bold', letterSpacing: 4 }}>
-          LET'S GO →
-        </Text>
-      </Pressable>
-    </View>
-  );
+    </Pressable>
+  </View>
+  
+);
 }

@@ -3,6 +3,7 @@ import { useSetAtom } from 'jotai';
 import * as SecureStore from 'expo-secure-store';
 import { signIn } from '../../api/auth';
 import { authTokenAtom } from '../../atoms/auth';
+import { router } from 'expo-router';
 
 export const useSignInMutation = () => {
   const setToken = useSetAtom(authTokenAtom);
@@ -10,10 +11,9 @@ export const useSignInMutation = () => {
   return useMutation({
     mutationFn: signIn,
     onSuccess: async (data) => {
-      console.log('Success! Token:', data.token);
       await SecureStore.setItemAsync('token', data.token);
       setToken(data.token);
-      console.log('Token set in atom');
+      router.replace('/(tabs)');
     },
     onError: (error) => {
       console.error('Sign in error:', error);
