@@ -6,7 +6,7 @@ import { supabase } from '../db/supabase';
 const router = Router();
 
 const SignInSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
 });
 
 router.post('/email-signin', async (req: Request, res: Response) => {

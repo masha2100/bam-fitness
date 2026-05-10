@@ -1,9 +1,16 @@
 import { z } from 'zod';
 
-export const WorkoutLogSetSchema = z.object({
-  reps: z.coerce.number().int().positive('Reps must be > 0'),
-  weight: z.coerce.number().positive('Weight must be > 0'),
-  completed: z.boolean(),
+export const WorkoutLogSchema = z.object({
+  templateId: z.string().min(1),
+  durationSec: z.number().int().nonnegative(),
+  exercises: z.array(z.object({
+    id: z.string(),
+    sets: z.array(z.object({
+      reps: z.coerce.number().int().positive(),
+      weight: z.coerce.number().positive(),
+      completed: z.boolean(),
+    })).min(1),
+  })), 
 });
 
 export const WorkoutLogExerciseSchema = z.object({
